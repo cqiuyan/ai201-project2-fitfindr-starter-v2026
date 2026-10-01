@@ -12,7 +12,7 @@ Build and test your three tools in `tools.py` first. Then come here.
 
     python agent.py          runs both example paths below
 """
-
+import re 
 import config
 import trace
 from tools import search_listings, suggest_outfit, create_fit_card
@@ -108,8 +108,124 @@ def run_agent(query: str, wardrobe: dict) -> dict:
     session = new_session(query, wardrobe)
 
     # TODO: delete these two lines and build the loop.
-    session["error"] = "The planning loop isn't built yet — see the TODO in agent.py."
-    return session
+    session = new_session(query, wardrobe)
+
+    step = "parse"
+    count = 0
+
+    while True:
+        count += 1
+        trace.check_iterations(count)
+
+        # ── Step 1: parse the query 
+        if step == "parse":
+
+            # Find max price:
+            price_match = re.search(
+                r"(?:under|below|max(?:imum)?(?: price)?(?: of)?)\s*\$?(\d+(?:\.\d+)?)",
+                query,
+                re.IGNORECASE,
+            )
+
+            if price_match:
+                max_price = float(price_match.group(1))
+            else:
+                max_price = None
+
+            # Find size:
+            size_match = re.search(
+                r"\bsize\s+([A-Za-z0-9/]+)",
+                query,
+                re.IGNORECASE,
+            )
+
+            if size_match:
+                size = size_match.group(1)
+            else:
+                size = None
+
+            # Remove price and size phrases from the description
+            description = re.sub(
+                r"(?:under|below|max(?:imum)?(?: price)?(?: of)?)\s*\$?\d+(?:\.\d+)?",
+                "",
+                query,
+                flags=re.IGNORECASE,
+            )
+
+            description = re.sub(
+                r"\bsize\s+[A-Za-z0-9/]+",
+                "",
+                description,
+                flags=re.IGNORECASE,
+            )
+
+            # Remove common filler words
+            description = re.sub(
+                r"\b(?:looking for|find me|find|want|need|i'm looking for|i am looking for)\b",
+                "",
+                description,
+                flags=re.IGNORECASE,
+            )
+
+            description = " ".join(description.split()).strip(" ,.-")
+
+            session["parsed"] = {
+                "description": description,
+                "size": size,
+                "max_price": max_price,
+            }
+
+            step = "search"
+
+        # ── Step 2: search listings 
+        elif step == "search":
+
+            parsed = session["parsed"]
+
+            results = search_listings(
+                description=parsed["description"],
+                size=parsed["size"],
+                max_price=parsed["max_price"],
+            )
+
+            session["search_results"] = results
+
+            # The Branch 
+            if not results:
+                session["error"] = (
+                    "I couldn't find any matching listings. "
+                    "Try increasing your price limit, choosing another size, "
+                    "or using broader search terms."
+                )
+                return session
+
+            session["selected_item"] = results[0]
+
+            step = "outfit"
+
+        # ── Step 3: suggest outfit 
+        elif step == "outfit":
+
+            outfit = suggest_outfit(
+                session["selected_item"],
+                session["wardrobe"],
+            )
+
+            session["outfit_suggestion"] = outfit
+
+            step = "fit_card"
+
+        # ── Step 4: create fit card 
+        elif step == "fit_card":
+
+            fit_card = create_fit_card(
+                session["outfit_suggestion"],
+                session["selected_item"],
+            )
+
+            session["fit_card"] = fit_card
+
+            return session
 
 
 # ── running it directly ───────────────────────────────────────────────────────
