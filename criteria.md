@@ -27,7 +27,8 @@ tool calls and returns a fit card — in at least 4 of 5 tries.
 **Why this target:**
 <!-- Why 4 of 5 and not 5 of 5? Something about your search, probably —
      "my search is a plain keyword match and some phrasings will miss" is a
-     real answer. -->
+     real answer. --> 
+     4 of 5 tries because search_listings uses keyword overlap rather than semantic search, so some reasonable phrasings may not match the exact words used in the listing data. I still expect most clearly matching queries to complete the full loop.
 
 ---
 
@@ -39,6 +40,7 @@ Given a query that matches no listings, the agent stops before calling
 **Why this target:**
 <!-- Why is 5 of 5 reasonable here when criterion 1 isn't? What's different
      about this path? -->
+     5 of 5 tries because this branch is deterministic. If search_listings returns an empty list, the loop should always stop immediately rather than calling later tools with missing data.
 
 ---
 
@@ -53,12 +55,10 @@ Given a query that matches no listings, the agent stops before calling
      look like state failure — it looks like a tool problem. Something that
      compares session["selected_item"] against what actually reached
      suggest_outfit is the shape you're after. -->
+     For a successful search, session["selected_item"]["id"] matches session["search_results"][0]["id"] in 5 of 5 tries, and that selected item is the one passed into suggest_outfit.
 
 
-
-**Why this target:**
-
-
+**Why this target:** 5 of 5 tries because session state is controlled by the program rather than by model output. The selected item should never change between the search result and the next tool call.
 
 ---
 
@@ -74,12 +74,9 @@ Given a query that matches no listings, the agent stops before calling
      mentions the price? Two different items producing the same opening
      sentence? A card longer than a caption anyone would post? Any of those can
      be turned into a number. -->
+     In at least 4 of 5 successful runs, the fit card is 2–4 sentences long and mentions the selected item's price and platform.
 
-
-
-**Why this target:**
-
-
+**Why this target:** 4 of 5 tries because create_fit_card uses a language model, so the exact wording can vary even when the prompt gives clear instructions. The important requirement is that the caption usually keeps the key details and stays short enough to read like a real post.
 
 ---
 
@@ -91,12 +88,10 @@ Given a query that matches no listings, the agent stops before calling
      wardrobe path, what happens when the model can't be reached, whether the
      search respects a price ceiling — anything, as long as it names a number
      or an observable outcome. -->
+     When the agent is run with an empty wardrobe, suggest_outfit returns a non-empty styling suggestion without claiming that the user already owns specific wardrobe pieces in 5 of 5 tries.
 
 
-
-**Why this target:**
-
-
+**Why this target:**  5 of 5 tries because the tool explicitly checks whether the wardrobe is empty before building the prompt. The empty-wardrobe path should therefore always produce general styling advice rather than failing or inventing saved clothing.
 
 ---
 
