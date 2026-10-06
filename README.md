@@ -113,6 +113,11 @@
 **One full query**
 
 ```
+$ python app.py ask 'designer ballgown size XXS under $5'
+
+  I couldn't find any matching listings. Try increasing your price limit, choosing another size, or using broader search terms.
+
+
 $ python app.py ask 'vintage graphic tee under $30'
 
   Found:    Y2K Baby Tee — Butterfly Print — $18.0 on depop
