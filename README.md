@@ -40,8 +40,7 @@
 ## What This Does
 
 <!-- Three or four sentences: what a user asks for, and what they get back. -->
-
-
+FitFindr lets a user search for thrifted clothing using a description, optional size, and maximum price. It finds matching listings and selects the best result based on keyword overlap. The agent then suggests outfits using pieces from the user's wardrobe, or gives general styling advice if the wardrobe is empty. Finally, it creates a short fit-card caption based on the selected item and outfit suggestion.
 
 ---
 
@@ -136,7 +135,7 @@ $ python app.py ask 'vintage graphic tee under $30'
 *   **Shoes:** Black combat boots (w_008)
 *   *Why it works:* Layering the pink, purple, and white butterfly tee under a slightly cropped black denim jacket with combat boots tones down the sweetness of the cottagecore/Y2K vibe and gives it a grunge-leaning edge against the earthy trousers.
 
-  Fit card: Found the absolute cutest Y2K butterfly baby tee thrifting the other day and I am so obsessed with how it looks paired with baggy dark wash jeans and chunky sneakers for that ultimate Y2K streetwear vibe. I'm letting this little gem go on my Depop for just $18.00 since my closet is overflowing. Snag it before I change my mind!
+Fit card: Found the absolute cutest Y2K butterfly baby tee thrifting the other day and I am so obsessed with how it looks paired with baggy dark wash jeans and chunky sneakers for that ultimate Y2K streetwear vibe. I'm letting this little gem go on my Depop for just $18.00 since my closet is overflowing. Snag it before I change my mind!
 
 ```
 
@@ -192,15 +191,15 @@ python -c "from tools import search_listings; print(search_listings('designer ba
 
 **Moment 1**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* I showed AI the ImportError: cannot import name 'genai' from 'google' error that appeared when I tested suggest_outfit.
+- *What came back:* It suggested installing google-genai and then testing the import directly.
+- *What I changed:* I ran python -m pip install google-genai, then verified it with python -c "from google import genai; print('genai import works')". After that, suggest_outfit ran successfully and returned outfit suggestions.
 
 **Moment 2**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* I gave AI my acceptance criteria and asked, “Could someone check these without asking me what I meant?” I specifically asked it to attack weak or vague criteria.
+- *What came back:* It pointed out that my original empty-wardrobe criterion only checked whether suggest_outfit returned something, which could still pass even if the model invented clothes the user supposedly owned.
+- *What I changed:* I rewrote the criterion to say: “When the agent is run with an empty wardrobe, suggest_outfit returns a non-empty styling suggestion without claiming that the user already owns specific wardrobe pieces in 5 of 5 tries.” This made the criterion observable and stricter than simply checking for a non-empty response. 
 
 <!-- ═══════════════════════ UNIT 4 — THE TEST ═══════════════════════
 
