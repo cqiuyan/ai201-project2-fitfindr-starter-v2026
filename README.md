@@ -280,24 +280,43 @@ that produced it:
      the same length, your branch isn't working — and this is the fastest way
      anyone will ever find that out. -->
 
-**Happy path**
+**Happy path** python app.py ask 'vintage graphic tee under $30'
+
+```
+[1] parse_query
+      in:  dict with keys: query
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 10 items: Y2K Baby Tee — Butterfly Print, Graphic Tee — 2003 Tour Bootleg Style, Vintage Band Tee — Faded Grey … +7 more
+[3] suggest_outfit
+      in:  dict with keys: new_item, wardrobe
+      out: Here are two outfit suggestions using the Y2K Butterfly Baby Tee and pieces from your wardrobe: ...
+[4] create_fit_card
+      in:  dict with keys: outfit, new_item
+      out: Found the absolute cutest Y2K butterfly baby tee ...
 
 ```
 
-```
-
-**Empty search**
+**Empty search** python app.py ask 'designer ballgown size XXS under $5' --trace
 
 ```
+[1] parse_query
+      in:  dict with keys: query
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: [] (empty)
 
+  I couldn't find any matching listings. Try increasing your price limit, choosing another size, or using broader search terms.
 ```
 
 **On the MCP move:** <!-- what changed in your code, and whether anything
 behaved differently afterwards. If the rewire didn't work, say exactly where it
 broke — the error text and the last thing that worked. That earns the point in
-full. -->
+full. --> 
 
-
+I registered search_listings as an MCP tool in mcp_server.py and changed agent.py::run_agent from calling search_listings directly to calling mcp_client.call_tool("search_listings", ...). The returned search results kept the same structure, so the rest of the planning loop and its branch did not need to change. python mcp_client.py confirmed that the server exposed search_listings with the expected description and typed inputs.
 
 ---
 
