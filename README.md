@@ -222,7 +222,7 @@ python -c "from tools import search_listings; print(search_listings('designer ba
 | Criterion | Target | Try 1 | Try 2 | Try 3 | Try 4 | Try 5 | Verdict |
 |---|---|---|---|---|---|---|---|
 | 1. matching query completes | 4 of 5 | PASS  | PASS  | PASS  |  PASS | PASS  | MET |
-| 2. impossible query stops early | 5 of 5 |  PASS |  PASS | PASS  |  PASS | PASS  | v |
+| 2. impossible query stops early | 5 of 5 |  PASS |  PASS | PASS  |  PASS | PASS  | MET |
 | 3. selected item stays consistent | 5 of 5 | PASS  | PASS | PASS  |  PASS | PASS  | MET |
 | 4. fit card contains required details | 4 of 5  | PASS  |  PASS |  PASS | PASS  | PASS | MET |
 | 5. empty wardrobe | 5 of 5 | PASS  | PASS  | PASS  |  PASS |  PASS | MET |
@@ -353,11 +353,11 @@ I registered search_listings as an MCP tool in mcp_server.py and changed agent.p
 
 | Criterion | Target | Try 1 | Try 2 | Try 3 | Try 4 | Try 5 | Verdict |
 |---|---|---|---|---|---|---|---|
-| 1. Matching query completes all three tools | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
-| 2. Impossible query stops before the second tool | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
-| 3. Selected item stays consistent through the session | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
-| 4. Fit card contains the required listing details | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
-| 5. Empty wardrobe still produces useful styling advice | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 1. Matching query completes all three tools | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET  |
+| 2. Impossible query stops before the second tool | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET  |
+| 3. Selected item stays consistent through the session | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET  |
+| 4. Fit card contains the required listing details | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET  |
+| 5. Empty wardrobe still produces useful styling advice | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET  |
 
 **Did it help, and how do I know:**
 
