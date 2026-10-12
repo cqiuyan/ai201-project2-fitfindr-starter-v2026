@@ -316,6 +316,9 @@ Requirements:
 - Mention the platform once.
 - Be specific about the outfit's vibe.
 - Do not make it sound like a product description.
+- Do not invent facts or actions that are not in the input.
+- Do not claim the user is selling or listing the item.
+- Do not call the platform "my Depop" or imply the user owns the listing.
 """
 
     return generate(prompt).strip()
