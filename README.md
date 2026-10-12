@@ -275,14 +275,13 @@ try 1: completed — fit card 271 chars
 
 | # | Criterion | Target | Verdict | How I decided |
 |---|---|---|---|---|
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
+| 1 | Matching query completes all three tools | 4 of 5 | MET | All five runs reached search_listings, suggest_outfit, and create_fit_card and returned a non-empty fit card. |
+| 2 | Impossible query stops before the second tool | 5 of 5 | MET | All five runs returned an empty search result, stopped immediately, and gave a message telling the user to change the price, size, or search terms. |
+| 3 | Selected item stays consistent through the session | 5 of 5 | MET | The selected item remained the Y2K Baby Tee across all five runs, and suggest_outfit generated suggestions for that same item rather than a different search result. |
+| 4 | Fit card contains the required listing details | 4 of 5 | MET | All five fit cards were 2–4 sentences and included both the selected item's $18 price and Depop platform. |
+| 5 | Empty wardrobe still produces useful styling advice | 5 of 5 | MET | All five empty-wardrobe runs returned non-empty general styling suggestions and did not refer to saved wardrobe item IDs or claim the user already owned specific pieces. |
 
-**Diagnoses**
-
+**Diagnoses** None of the five acceptance criteria missed their targets in the before run, so there is no failed criterion that requires a diagnosis.
 
 
 ---
