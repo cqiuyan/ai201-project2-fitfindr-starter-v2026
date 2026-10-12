@@ -221,16 +221,35 @@ python -c "from tools import search_listings; print(search_listings('designer ba
 
 | Criterion | Target | Try 1 | Try 2 | Try 3 | Try 4 | Try 5 | Verdict |
 |---|---|---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |  |  |
+| 1. matching query completes | 4 of 5 | PASS  | PASS  | PASS  |  PASS | PASS  | MET |
+| 2. impossible query stops early | 5 of 5 |  PASS |  PASS | PASS  |  PASS | PASS  | v |
+| 3. selected item stays consistent | 5 of 5 | PASS  | PASS | PASS  |  PASS | PASS  | MET |
+| 4. fit card contains required details | 4 of 5  | PASS  |  PASS |  PASS | PASS  | PASS | MET |
+| 5. empty wardrobe | 5 of 5 | PASS  | PASS  | PASS  |  PASS |  PASS | MET |
 
 **Real output from one try**, pasted as text, naming the file and function
 that produced it:
 
 ```
+Produced by `run_eval.py::main`, testing `agent.py::run_agent`
+
+matching query completes (example wardrobe)
+query: vintage graphic tee under $30
+
+[1] parse_query
+      in:  dict with keys: query
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 10 items: Y2K Baby Tee — Butterfly Print, Graphic Tee — 2003 Tour Bootleg Style, Vintage Band Tee — Faded Grey … +7 more
+[3] suggest_outfit
+      in:  dict with keys: new_item, wardrobe
+      out: Here are two ways to style the Y2K Baby Tee with items you already own: ...
+[4] create_fit_card
+      in:  dict with keys: outfit, new_item
+      out: I am so obsessed with this Y2K baby tee I just thrifted...
+
+try 1: completed — fit card 271 chars
 
 ```
 
